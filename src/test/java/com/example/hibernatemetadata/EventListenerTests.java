@@ -6,8 +6,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +21,6 @@ import static org.hamcrest.Matchers.startsWith;
 @Transactional
 public class EventListenerTests {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(EventListenerTests.class);
-
     @Rule
     public ExpectedException ex = ExpectedException.none();
 
@@ -32,15 +28,38 @@ public class EventListenerTests {
     BookRepository bookRepository;
 
     @Test
+    public void updateDoesNotThrow() {
+        Book forInsert = new Book();
+        forInsert.setAuthor("X");
+        Book inserted = bookRepository.save(forInsert);
+        assert inserted.getId() != null;
+
+        inserted.setAuthor("Y");
+        bookRepository.saveAndFlush(inserted);
+    }
+
+    @Test
     public void updateThrows() {
         Book forInsert = new Book();
         forInsert.setName("foobar");
-        Book inserted = bookRepository.saveAndFlush(forInsert);
+        Book inserted = bookRepository.save(forInsert);
         assert inserted.getId() != null;
 
         inserted.setName("newName");
         ex.expectMessage(startsWith("Boo"));
         bookRepository.saveAndFlush(inserted);
+    }
+
+    @Test
+    public void deleteThrows() {
+        Book forInsert = new Book();
+        forInsert.setName("foobar");
+        Book inserted = bookRepository.saveAndFlush(forInsert);
+        assert inserted.getId() != null;
+
+        ex.expectMessage(startsWith("Cannot delete"));
+        bookRepository.delete(inserted);
+        bookRepository.flush();
     }
 
 }

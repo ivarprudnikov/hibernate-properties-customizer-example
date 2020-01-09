@@ -1,13 +1,11 @@
 package com.example.hibernatemetadata.integrators;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.model.relational.Database;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.event.service.spi.EventListenerRegistry;
 import org.hibernate.event.spi.EventType;
-import org.hibernate.event.spi.PreUpdateEvent;
+import org.hibernate.event.spi.PreDeleteEventListener;
 import org.hibernate.event.spi.PreUpdateEventListener;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 
@@ -19,6 +17,8 @@ public class MyIntegrator
 
     public static final PreUpdateEventListener PREUPDATE_INSTANCE =
             new PreUpdateEventListenerImp();
+    public static final PreDeleteEventListener PREDELETE_INSTANCE =
+            new PreDeleteEventListenerImp();
 
     private Database database;
 
@@ -45,6 +45,7 @@ public class MyIntegrator
                 serviceRegistry.getService(EventListenerRegistry.class);
 
         eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, PREUPDATE_INSTANCE);
+        eventListenerRegistry.appendListeners(EventType.PRE_DELETE, PREDELETE_INSTANCE);
     }
 
     @Override
@@ -54,17 +55,4 @@ public class MyIntegrator
 
     }
 
-    public static class PreUpdateEventListenerImp implements PreUpdateEventListener {
-
-        private static Logger logger = LoggerFactory.getLogger(PreUpdateEventListenerImp.class);
-
-        @Override
-        public boolean onPreUpdate(PreUpdateEvent e) {
-            Object[] oldInstance = e.getOldState();
-            Object[] newInstance = e.getState();
-            logger.info("PreUpdateEvent, oldInstance {} newInstance {}", oldInstance, newInstance);
-
-            throw new RuntimeException("Boo");
-        }
-    }
 }
