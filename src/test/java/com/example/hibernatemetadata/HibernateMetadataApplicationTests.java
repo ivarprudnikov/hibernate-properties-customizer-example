@@ -1,6 +1,6 @@
 package com.example.hibernatemetadata;
 
-import com.example.hibernatemetadata.integrators.MetadataExtractorIntegrator;
+import com.example.hibernatemetadata.integrators.MyIntegrator;
 import org.hibernate.boot.Metadata;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -23,7 +23,7 @@ public class HibernateMetadataApplicationTests {
 
 	@Test
 	public void contextLoads() {
-		Metadata metadata = MetadataExtractorIntegrator.INSTANCE.getMetadata();
+		Metadata metadata = MyIntegrator.INSTANCE.getMetadata();
 
 		for ( PersistentClass persistentClass : metadata.getEntityBindings()) {
 
