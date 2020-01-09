@@ -1,5 +1,0 @@
-== Example use of HibernatePropertiesCustomizer
-
-Used to register an IntegratorProvider with Hibernate in Spring Boot.
-
-See https://stackoverflow.com/questions/51501405 for more details
