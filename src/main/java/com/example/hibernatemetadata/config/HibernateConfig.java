@@ -1,6 +1,6 @@
 package com.example.hibernatemetadata.config;
 
-import com.example.hibernatemetadata.integrators.MetadataExtractorIntegrator;
+import com.example.hibernatemetadata.integrators.MyIntegrator;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,6 @@ public class HibernateConfig implements HibernatePropertiesCustomizer {
     @Override
     public void customize(Map<String, Object> hibernateProperties) {
         hibernateProperties.put("hibernate.integrator_provider",
-                (IntegratorProvider) () -> Collections.singletonList(MetadataExtractorIntegrator.INSTANCE));
+                (IntegratorProvider) () -> Collections.singletonList(MyIntegrator.INSTANCE));
     }
 }

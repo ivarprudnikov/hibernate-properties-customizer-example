@@ -5,11 +5,11 @@ import org.hibernate.boot.model.relational.Database;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
 
-public class MetadataExtractorIntegrator
+public class MyIntegrator
         implements org.hibernate.integrator.spi.Integrator {
 
-    public static final MetadataExtractorIntegrator INSTANCE =
-            new MetadataExtractorIntegrator();
+    public static final MyIntegrator INSTANCE =
+            new MyIntegrator();
 
     private Database database;
 
